@@ -16,6 +16,9 @@ public class Rol {
     private Long rolId;
     private String nombre;
 
+    @Column(name = "rol_nombre")
+    private String rolNombre;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "rol")
     private Set<UsuarioRol> usuarioRoles = new HashSet<>();
 }

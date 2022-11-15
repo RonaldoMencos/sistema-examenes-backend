@@ -6,8 +6,10 @@ import com.oscarmencos.sistemaexamenesbackend.repository.RolRepository;
 import com.oscarmencos.sistemaexamenesbackend.repository.UsuarioRepository;
 import com.oscarmencos.sistemaexamenesbackend.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.Set;
 
 @Service
@@ -35,6 +37,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
             usuario.getUsuarioRoles().addAll(usuarioRoles);
             usuario.setActivo(true);
+            int strength = 10; // work factor of bcrypt
+            BCryptPasswordEncoder bCryptPasswordEncoder =
+                    new BCryptPasswordEncoder(strength, new SecureRandom());
+            String encodedPassword = bCryptPasswordEncoder.encode(usuario.getPassword());
+            usuario.setPassword(encodedPassword);
             usuarioLocal = usuarioRepository.save(usuario);
         }
         return usuarioLocal;
